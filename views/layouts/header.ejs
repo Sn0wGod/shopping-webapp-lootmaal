@@ -1,0 +1,109 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title> <%= title %> </title>
+    <meta name="theme-color" content="#2874f0">
+    <link rel="icon" href="/images/shopping-cart.png">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/fancyapps/fancybox@3.5.7/dist/jquery.fancybox.min.css" />
+    <link href="https://fonts.googleapis.com/css?family=Arimo|Bangers|Open+Sans+Condensed:300&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/css/style.css">
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  </head>
+  <body>
+    <div class="ajaxbg">
+            <div class="ajaxinner">
+                <h3>You are now being redirected to paypal...</h3>
+                <img src="/images/ajax-loader.gif" alt=""/>
+            </div>
+        </div>
+
+    <nav class="navbar navbar-expand-md navbar-dark sticky-top">
+  <a class="navbar-brand" href="/">Loot<span>Maal</span></a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <ul class="navbar-nav mr-auto">
+      <% pages.forEach(function(page){ %>
+          <% if (page.slug == "home") { %>
+            <li class="nav-item"><a class="nav-link active" href="/"><%= page.title %></a></li>
+          <% } else {%>
+            <li class="nav-item"><a class="nav-link active" href="/<%= page.slug %>"><%= page.title %></a></li>
+          <% } %>
+       <% }); %>
+    </ul>
+    <ul class="navbar-nav ml-auto">
+      <li class="nav-item">
+          <a class="nav-link active" href="/cart/checkout">My Cart(
+
+            <%    if(typeof cart !== "undefined") {  %>
+                    <%= cart.length  %>
+            <%    }else{  %>
+                  0
+            <%    } %>
+
+            )
+          </a>
+      </li>
+
+  <%    if(user){  %>
+    <li class="nav-item">
+      <a class="nav-link active" href="#">Hi, <%= user.username %></a>
+    </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="/users/logout">Logout</a>
+        </li>
+<%      } else { %>
+
+      <li class="nav-item">
+        <a class="nav-link active" href="/users/register">Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link active" href="/users/login">Log in</a>
+      </li>
+
+  <%  } %>
+
+  <%    if(user && user.admin == 1){  %>
+        <li class="nav-item">
+          <a class="nav-link active" href="/admin/pages">Admin-area</a>
+        </li>
+<%      }  %>
+
+    </ul>
+
+  </div>
+</nav>
+
+<div class="container">
+
+<%- messages('messages', locals) %>
+
+<%  if(errors){  %>
+<%  errors.forEach(function(error){  %>
+    <div class="alert alert-danger">
+<%=      error.msg %>
+    </div>
+<%  });  %>
+<%}  %>
+
+<div class="row">
+    <div class="col-xs-12 col-md-3">
+        <h3>Categories</h3>
+        <ul class="list-group">
+            <li class="list-group-item"><a href="/products">All products</a></li>
+            <% categories.forEach(function(c){ %>
+                <li class="list-group-item"><a href="/products/<%= c.slug %>"><%= c.title %></a></li>
+            <% }); %>
+        </ul>
+    </div>
+    <div class="col-xs-12 col-md-1"></div>
+    <div class="col-xs-12 col-md-8">
